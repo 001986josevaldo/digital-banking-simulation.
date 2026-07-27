@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco Python - Acesso ao Cliente</title>
+
+    <!-- Importando o arquivo CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container" id="app">
+
+        <!-- Tela de Login e Cadastro -->
+        <div class="card" id="auth-section">
+            <h2>Acesso ao Banco</h2>
+            <div class="form-group">
+                <label>Usuário:</label>
+                <input type="text" id="username" placeholder="Digite seu nome">
+            </div>
+            <div class="form-group">
+                <label>Senha:</label>
+                <input type="password" id="password" placeholder="Digite sua senha">
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="login()">Entrar</button>
+                <button onclick="registrar()" style="background-color: var(--primary);">Criar Conta</button>
+            </div>
+            <div id="auth-msg" class="alert"></div>
+        </div>
+
+        <!-- Dashboard (Oculto até o login) -->
+        <div class="dashboard" id="dashboard-section">
+
+            <!-- Cabeçalho do Usuário com Botão de Sair -->
+            <div class="card" style="grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; padding: 15px 25px;">
+                <h3 style="margin: 0; color: var(--primary);">Olá, <span id="nome-usuario-logado"></span>!</h3>
+                <button onclick="logout()" style="width: auto; background-color: #E74C3C; padding: 8px 20px;">Sair</button>
+            </div>
+
+            <!-- Conta Bancária (Apenas Exibição) -->
+            <div class="card">
+                <h2>Conta Bancária</h2>
+
+                <div style="margin: 20px 0;">
+                    <p style="color: #7f8c8d; margin-bottom: 5px; font-weight: bold;">Número da Conta:</p>
+                    <h3 style="margin: 0; color: var(--primary);"><span id="numero-conta-texto">--</span></h3>
+                </div>
+
+                <div class="form-group" style="margin: 25px 0;">
+                    <label style="color: #7f8c8d; font-size: 0.9em; text-transform: uppercase; font-weight: bold;">Saldo Disponível</label>
+                    <h1 style="margin: 5px 0; color: var(--secondary); font-size: 2.5em;">
+                        R$ <span id="valor-saldo-texto">0.00</span>
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Transferência Bancária (PIX) -->
+            <div class="card" style="grid-column: 1 / -1;">
+                <h2>Transferência (PIX)</h2>
+                <div style="display: flex; gap: 15px;">
+ 
+                    <div class="form-group" style="flex: 1;">
+                        <label>Chave:</label>
+                        <input type="number" id="transf-destino" placeholder="Nº da conta">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Valor (R$):</label>
+                        <input type="number" id="transf-valor" step="0.01">
+                    </div>
+                </div>
+                <button onclick="transferir()">Realizar Transferência</button>
+                <div id="transf-msg" class="alert"></div>
+            </div>
+
+        </div> <!-- FECHAMENTO DO DASHBOARD -->
+
+    </div>
+
+    <!-- Importando o arquivo JavaScript (sempre coloque no final antes de fechar o body) -->
+    <script src="script.js"></script>
+</body>
+
+</html>
