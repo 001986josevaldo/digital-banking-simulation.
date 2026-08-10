@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 # Define onde o banco de dados será salvo (neste caso, um arquivo chamado banco.db)
 #SQLALCHEMY_DATABASE_URL = "sqlite:///./banco.db"
 
-SQLALCHEMY_DATABASE_URL = "postgresql://postgres:banco-simulador@db.tkobjirhdgpnawtxsrno.supabase.co:5432/postgres"
+SQLALCHEMY_DATABASE_URL = "postgresql://postgres:banco-simulador@aws-0-sa-east-1.pooler.supabase.com:5432/postgres"
 
 # O engine é o motor que gerencia a conexão com o banco
 """engine = create_engine(
