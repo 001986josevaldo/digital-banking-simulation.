@@ -16,10 +16,10 @@ app = FastAPI(title="API Bancária", description="Sistema de transferências e c
 # Configuração de CORS para permitir que o frontend converse com a API
 app.add_middleware(
     CORSMiddleware,
-    #allow_origins=["*"], # Permite acesso de qualquer origem (ideal apenas para testes locais)
+    allow_origins=["*"], # Permite acesso de qualquer origem (ideal apenas para testes locais)
     # Permite acesso apenas do frontend hospedado no Vercel
-    allow_origins=["http://digital-banking-simulation-innrpdjes-001986josevaldos-projects.vercel.app"],
-    allow_credentials=True,
+    #allow_origins=["http://digital-banking-simulation-innrpdjes-001986josevaldos-projects.vercel.app"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
