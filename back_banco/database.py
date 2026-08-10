@@ -4,17 +4,14 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 # Define onde o banco de dados será salvo (neste caso, um arquivo chamado banco.db)
 #SQLALCHEMY_DATABASE_URL = "sqlite:///./banco.db"
 
-SQLALCHEMY_DATABASE_URL = "postgresql://postgres:[banco-simulador]@db.tkobjirhdgpnawtxsrno.supabase.co:5432/postgres"
-
+SQLALCHEMY_DATABASE_URL = "postgresql://postgres:banco-simulador@db.tkobjirhdgpnawtxsrno.supabase.co:5432/postgres"
 
 # O engine é o motor que gerencia a conexão com o banco
 """engine = create_engine(
     # check_same_thread é necessário apenas para o SQLite
     SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
 )"""
-
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
-
 
 # A SessionLocal é o que usaremos para fazer queries (buscar, salvar, atualizar)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
