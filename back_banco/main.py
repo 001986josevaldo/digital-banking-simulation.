@@ -18,7 +18,7 @@ app.add_middleware(
     CORSMiddleware,
     #allow_origins=["*"], # Permite acesso de qualquer origem (ideal apenas para testes locais)
     # Permite acesso apenas do frontend hospedado no Vercel
-    allow_origins=["http://simulação-bancária-digital-m3wzmsk57-001986josevaldos-projects.vercel.app"],
+    allow_origins=["http://digital-banking-simulation-innrpdjes-001986josevaldos-projects.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
