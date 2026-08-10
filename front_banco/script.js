@@ -1,5 +1,9 @@
 /* ================= JavaScript (Integração com FastAPI) ================= */
-const API_URL = "http://127.0.0.1:8000";
+// endereço local do backend (FastAPI) para testes locais
+// const API_URL = "http://127.0.0.1:8000";
+
+// endereço do backend (FastAPI) hospedado no Render.com
+const API_URL = "https://digital-banking-simulation-back-banco.onrender.com";
 
 function showMsg(elementId, text, isError = false) {
     const el = document.getElementById(elementId);
