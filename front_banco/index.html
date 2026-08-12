@@ -5,17 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Banco Python - Acesso ao Cliente</title>
-
-    <!-- Importando o arquivo CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-
     <div class="container" id="app">
 
-        <!-- Tela de Login e Cadastro -->
-        <div class="card" id="auth-section">
+        <!-- Tela de Login -->
+        <div class="card" id="login-section">
             <h2>Acesso ao Banco</h2>
             <div class="form-group">
                 <label>Usuário:</label>
@@ -25,31 +22,27 @@
                 <label>Senha:</label>
                 <input type="password" id="password" placeholder="Digite sua senha">
             </div>
-            <div style="display: flex; gap: 10px;">
+            <div style="display: flex; gap: 10px; flex-direction: column;">
                 <button onclick="login()">Entrar</button>
-                <button onclick="registrar()" style="background-color: var(--primary);">Criar Conta</button>
+                <!-- Redireciona para a página de cadastro -->
+                <button onclick="window.location.href='cadastro.html'" style="background-color: transparent; color: var(--primary); border: 1px solid var(--primary);">Não tem conta? Crie aqui</button>
             </div>
-            <div id="auth-msg" class="alert"></div>
+            <div id="login-msg" class="alert"></div>
         </div>
 
         <!-- Dashboard (Oculto até o login) -->
-        <div class="dashboard" id="dashboard-section">
-
-            <!-- Cabeçalho do Usuário com Botão de Sair -->
+        <div class="dashboard" id="dashboard-section" style="display: none;">
             <div class="card" style="grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; padding: 15px 25px;">
                 <h3 style="margin: 0; color: var(--primary);">Olá, <span id="nome-usuario-logado"></span>!</h3>
                 <button onclick="logout()" style="width: auto; background-color: #E74C3C; padding: 8px 20px;">Sair</button>
             </div>
 
-            <!-- Conta Bancária (Apenas Exibição) -->
             <div class="card">
                 <h2>Conta Bancária</h2>
-
                 <div style="margin: 20px 0;">
                     <p style="color: #7f8c8d; margin-bottom: 5px; font-weight: bold;">Número da Conta:</p>
                     <h3 style="margin: 0; color: var(--primary);"><span id="numero-conta-texto">--</span></h3>
                 </div>
-
                 <div class="form-group" style="margin: 25px 0;">
                     <label style="color: #7f8c8d; font-size: 0.9em; text-transform: uppercase; font-weight: bold;">Saldo Disponível</label>
                     <h1 style="margin: 5px 0; color: var(--secondary); font-size: 2.5em;">
@@ -58,11 +51,9 @@
                 </div>
             </div>
 
-            <!-- Transferência Bancária (PIX) -->
             <div class="card" style="grid-column: 1 / -1;">
                 <h2>Transferência (PIX)</h2>
                 <div style="display: flex; gap: 15px;">
- 
                     <div class="form-group" style="flex: 1;">
                         <label>Chave:</label>
                         <input type="number" id="transf-destino" placeholder="Nº da conta">
@@ -75,13 +66,16 @@
                 <button onclick="transferir()">Realizar Transferência</button>
                 <div id="transf-msg" class="alert"></div>
             </div>
-
-        </div> <!-- FECHAMENTO DO DASHBOARD -->
-
+        </div>
     </div>
 
-    <!-- Importando o arquivo JavaScript (sempre coloque no final antes de fechar o body) -->
+    <!-- Botão Flutuante do WhatsApp -->
+    <a href="https://wa.me/5511999999999?text=Olá!%20Preciso%20de%20ajuda%20com%20o%20Banco%20Python." class="whatsapp-btn" target="_blank" rel="noopener noreferrer" title="Fale com o Suporte">
+        <svg class="whatsapp-icon" viewBox="0 0 32 32">
+            <path d="M16.05 32h-.05c-2.6 0-5.15-.7-7.4-2l-7.6 2 2.05-7.4C1.75 22.3 1 19.25 1 16 1 7.7 7.75 1 16.05 1 24.3 1 31 7.75 31 16s-6.7 15-14.95 16zm-7.45-4.85l.45.25c1.95 1.15 4.2 1.75 6.5 1.75 7.15 0 12.95-5.8 12.95-12.95S22.7 3.25 15.55 3.25 2.6 9.05 2.6 16.2c0 2.4.65 4.75 1.85 6.75l.3.5-1.2 4.35 4.45-1.15zM23.1 21.2c-.35-1.05-2-1.95-2.35-2.05-.35-.1-1.85-.9-2.15-1.05-.3-.15-.55-.2-.75.1-.2.3-.85 1.05-1.05 1.25-.2.25-.4.3-.7.15-2.2-1.1-3.6-2.25-4.9-4.5-.15-.25 0-.4.15-.5.1-.1.25-.3.4-.45.1-.15.15-.3.25-.5.1-.15.05-.3 0-.45-.1-.15-.7-1.7-.95-2.35-.25-.6-.5-.5-.7-.5h-.6c-.25 0-.65.1-.95.45-.3.35-1.15 1.1-1.15 2.7 0 1.6 1.2 3.15 1.35 3.35.15.2 2.3 3.65 5.75 5 2.3.9 3.25 1 4.5.85 1-.1 2.35-.95 2.65-1.9.3-.95.3-1.75.2-1.9z"/>
+        </svg>
+    </a>
+
     <script src="script.js"></script>
 </body>
-
 </html>

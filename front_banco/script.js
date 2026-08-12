@@ -1,12 +1,9 @@
 /* ================= JavaScript (Integração com FastAPI) ================= */
-// endereço local do backend (FastAPI) para testes locais
-// const API_URL = "http://127.0.0.1:8000";
-
-// endereço do backend (FastAPI) hospedado no Render.com
 const API_URL = "https://digital-banking-simulation-back-banco.onrender.com";
 
 function showMsg(elementId, text, isError = false) {
     const el = document.getElementById(elementId);
+    if (!el) return; // Evita erro se o elemento não existir na página atual
     el.style.display = 'block';
     el.textContent = text;
     el.className = isError ? 'alert error' : 'alert success';
@@ -15,26 +12,25 @@ function showMsg(elementId, text, isError = false) {
 
 // Rota: Função local de Logout (Sair)
 function logout() {
-    // 1. Esconde o painel (dashboard) e mostra a tela de login
     document.getElementById('dashboard-section').style.display = 'none';
-    document.getElementById('auth-section').style.display = 'block';
+    document.getElementById('login-section').style.display = 'block';
     
-    // 2. Limpa os campos de digitação
     document.getElementById('username').value = '';
     document.getElementById('password').value = '';
-    document.getElementById('titular-nome').value = '';
     
-    // 3. Limpa todas as mensagens de alerta que ficaram na tela
-    document.getElementById('auth-msg').style.display = 'none';
-    document.getElementById('conta-msg').style.display = 'none';
-    document.getElementById('saldo-msg').style.display = 'none';
-    document.getElementById('transf-msg').style.display = 'none';
+    const transfMsg = document.getElementById('transf-msg');
+    if (transfMsg) transfMsg.style.display = 'none';
 }
 
-// Rota: POST /usuarios/
+// Rota: POST /usuarios/ (Cadastro)
 async function registrar() {
-    const nome = document.getElementById('username').value;
-    const senha = document.getElementById('password').value;
+    const nome = document.getElementById('reg-username').value.trim();
+    const senha = document.getElementById('reg-password').value.trim();
+
+    if (!nome || !senha) {
+        showMsg('reg-msg', 'Preencha todos os campos. Espaços vazios não são aceitos.', true);
+        return;
+    }
 
     try {
         const response = await fetch(`${API_URL}/usuarios/`, {
@@ -45,19 +41,28 @@ async function registrar() {
         const data = await response.json();
         
         if (response.ok) {
-            showMsg('auth-msg', 'Conta bancária e acesso criados com sucesso! Agora faça login.');
+            showMsg('reg-msg', 'Conta criada com sucesso! Redirecionando para login...');
+            // Aguarda 2 segundos e redireciona o usuário para a página inicial (index.html)
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
         } else {
-            showMsg('auth-msg', data.detail, true);
+            showMsg('reg-msg', data.detail, true);
         }
     } catch (error) {
-        showMsg('auth-msg', 'Erro de conexão com o servidor.', true);
+        showMsg('reg-msg', 'Erro de conexão com o servidor.', true);
     }
 }
 
 // Rota: POST /login/
 async function login() {
-    const nome = document.getElementById('username').value;
-    const senha = document.getElementById('password').value;
+    const nome = document.getElementById('username').value.trim();
+    const senha = document.getElementById('password').value.trim();
+
+    if (!nome || !senha) {
+        showMsg('login-msg', 'Informe usuário e senha.', true);
+        return;
+    }
 
     try {
         const response = await fetch(`${API_URL}/login/`, {
@@ -68,69 +73,28 @@ async function login() {
         const data = await response.json();
 
         if (response.ok) {
-            // 1. Esconde a tela de login e mostra o painel
-            document.getElementById('auth-section').style.display = 'none';
+            // Esconde Login e Mostra Dashboard
+            document.getElementById('login-section').style.display = 'none';
             document.getElementById('dashboard-section').style.display = 'grid';
 
-            // 2. Preenche o Cabeçalho com o nome
+            // Preenche dados do Dashboard
             document.getElementById('nome-usuario-logado').textContent = nome;
-            
-            // 3. Preenche a tela com os dados vindos do backend
             document.getElementById('numero-conta-texto').textContent = data.conta_id;
-            
-            // Transforma o número em formato de dinheiro (duas casas decimais)
             document.getElementById('valor-saldo-texto').textContent = parseFloat(data.saldo).toFixed(2);
-
         } else {
-            showMsg('auth-msg', data.detail, true);
+            showMsg('login-msg', data.detail, true);
         }
     } catch (error) {
-        showMsg('auth-msg', 'Erro de conexão com o servidor.', true);
-    }
-}
-
-// Rota: POST /contas/
-async function criarConta() {
-    const nome_titular = document.getElementById('titular-nome').value;
-    const saldo = parseFloat(document.getElementById('titular-saldo').value);
-
-    try {
-        const response = await fetch(`${API_URL}/contas/`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nome_titular, saldo })
-        });
-        const data = await response.json();
-        if (response.ok) showMsg('conta-msg', `Conta criada! ID: ${data.id}`);
-        else showMsg('conta-msg', 'Erro ao criar conta', true);
-    } catch (error) {
-        showMsg('conta-msg', 'Erro de conexão.', true);
-    }
-}
-
-// Rota: GET /contas/{id}/saldo
-async function consultarSaldo() {
-    const id = document.getElementById('consulta-id').value;
-
-    try {
-        const response = await fetch(`${API_URL}/contas/${id}/saldo`);
-        const data = await response.json();
-        if (response.ok) showMsg('saldo-msg', `${data.nome_titular} - Saldo: R$ ${data.saldo}`);
-        else showMsg('saldo-msg', data.detail, true);
-    } catch (error) {
-        showMsg('saldo-msg', 'Erro de conexão.', true);
+        showMsg('login-msg', 'Erro de conexão com o servidor.', true);
     }
 }
 
 // Rota: POST /transferencias/
 async function transferir() {
-    // Pega o ID da origem automaticamente do texto que está no painel (inserido no momento do login)
     const conta_origem_id = parseInt(document.getElementById('numero-conta-texto').textContent);
-    
     const conta_destino_id = parseInt(document.getElementById('transf-destino').value);
     const valor = parseFloat(document.getElementById('transf-valor').value);
 
-    // Validação básica de tela
     if (isNaN(conta_origem_id) || isNaN(conta_destino_id) || isNaN(valor) || valor <= 0) {
         showMsg('transf-msg', 'Preencha os campos de destino e valor corretamente.', true);
         return;
@@ -152,11 +116,9 @@ async function transferir() {
         if (response.ok) {
             showMsg('transf-msg', data.mensagem);
             
-            // Limpa os campos após o sucesso
             document.getElementById('transf-destino').value = '';
             document.getElementById('transf-valor').value = '';
             
-            // Opcional: Atualizar o saldo na tela subtraindo o valor transferido
             const saldoAtual = parseFloat(document.getElementById('valor-saldo-texto').textContent);
             document.getElementById('valor-saldo-texto').textContent = (saldoAtual - valor).toFixed(2);
             
